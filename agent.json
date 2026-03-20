@@ -1,0 +1,53 @@
+{
+  "name": "nexus",
+  "version": "1.0.0",
+  "description": "Autonomous AI agent that earns its own compute budget from DeFi yield and coordinates a network of specialized sub-agents across 46 Synthesis hackathon tracks.",
+  "operator_wallet": "0x0000000000000000000000000000000000000000",
+  "erc8004_identity": "0x0000000000000000000000000000000000000000",
+  "erc8183_id": "0x0000000000000000000000000000000000000000",
+  "ens_name": "nexus-agent.eth",
+  "self_credential": "pending_registration",
+  "supported_tools": [
+    "stake", "unstake", "wrap_steth", "get_vault_yield",
+    "get_treasury_status", "allocate_budget", "log_inference_spend",
+    "resolve_ens", "get_agent_reputation", "register_agent_identity",
+    "swap", "open_gmx_position", "dca", "get_portfolio",
+    "store", "retrieve", "log_action",
+    "dispatch_task", "hire_olas_agent", "send_message",
+    "score_public_good", "recommend_allocation",
+    "generate_proof", "verify_proof", "seal_function"
+  ],
+  "mcp_servers": [
+    {"name": "nexus-lido-mcp", "transport": "stdio", "command": "python mcp/lido-mcp/server.py"},
+    {"name": "nexus-treasury-mcp", "transport": "stdio", "command": "python mcp/treasury-mcp/server.py"},
+    {"name": "nexus-identity-mcp", "transport": "stdio", "command": "python mcp/identity-mcp/server.py"},
+    {"name": "nexus-trade-mcp", "transport": "stdio", "command": "python mcp/trade-mcp/server.py"},
+    {"name": "nexus-storage-mcp", "transport": "stdio", "command": "python mcp/storage-mcp/server.py"},
+    {"name": "nexus-coordinate-mcp", "transport": "stdio", "command": "python mcp/coordinate-mcp/server.py"},
+    {"name": "nexus-goods-mcp", "transport": "stdio", "command": "python mcp/goods-mcp/server.py"},
+    {"name": "nexus-secrets-mcp", "transport": "stdio", "command": "python mcp/secrets-mcp/server.py"}
+  ],
+  "sub_agents": ["nexus-trader", "nexus-staker", "nexus-scorer", "nexus-keeper", "nexus-prover", "nexus-monitor"],
+  "tech_stack": ["Python 3.12", "TypeScript", "Solidity 0.8.28", "Noir", "MCP", "FastAPI"],
+  "task_categories": ["DeFi", "yield management", "multi-agent coordination", "public goods", "ZK proofs", "agent identity"],
+  "compute_budget": {
+    "source": "wstETH_yield",
+    "model_gateway": "bankr",
+    "private_reasoning": "venice",
+    "fallback": "groq",
+    "max_daily_usd": "yield_balance"
+  },
+  "chains": ["ethereum", "base", "arbitrum", "celo", "status-network-sepolia", "sepolia"],
+  "contracts": {
+    "AgentTreasury_sepolia": "pending_deployment",
+    "AgentIdentity_sepolia": "pending_deployment",
+    "NexusArbiter_sepolia": "pending_deployment",
+    "NexusSliceHook_base": "pending_deployment"
+  },
+  "openclaw_skill": "https://raw.githubusercontent.com/vyqno/synthesis/main/nexus.skill.md",
+  "mcp_endpoint": "https://nexus-agent.xyz/mcp",
+  "filecoin_log_cid": "pending",
+  "repo": "https://github.com/vyqno/synthesis",
+  "hackathon": "Synthesis.md 2026",
+  "tracks_submitted": 46
+}

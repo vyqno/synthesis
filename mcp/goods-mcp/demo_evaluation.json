@@ -1,0 +1,136 @@
+{
+  "evaluated_at": "2026-03-20T00:00:00Z",
+  "batch": "octant-round-3-demo",
+  "projects": [
+    {
+      "name": "Protocol Guild",
+      "url": "https://github.com/protocolguild/protocol-guild",
+      "description": "Onchain funding mechanism for Ethereum core protocol contributors.",
+      "collected": {
+        "github_stars": 412,
+        "commits_90d": 38,
+        "contributors": 24,
+        "grants_received": 250000,
+        "on_chain_activity": 1840,
+        "governance_participation": 72.5,
+        "sybil_score": 8
+      },
+      "analysis": {
+        "impact_score": 91,
+        "legitimacy_score": 94,
+        "qualitative_summary": "Protocol Guild is the canonical public good for Ethereum core dev funding. Multi-sig vesting contract distributes streaming grants to 150+ contributors. Strong on-chain activity, high governance participation, negligible sybil risk. One of the highest-confidence allocations in the Octant ecosystem.",
+        "red_flags": []
+      },
+      "scoring": {
+        "final_score": 91.6,
+        "sybil_score": 8,
+        "recommendation": "FUND — strong public-good signal",
+        "confidence": "high"
+      }
+    },
+    {
+      "name": "Gitcoin Passport",
+      "url": "https://github.com/gitcoinco/passport",
+      "description": "Sybil resistance layer for web3 grants and governance.",
+      "collected": {
+        "github_stars": 1203,
+        "commits_90d": 215,
+        "contributors": 88,
+        "grants_received": 500000,
+        "on_chain_activity": 3400,
+        "governance_participation": 61.0,
+        "sybil_score": 12
+      },
+      "analysis": {
+        "impact_score": 88,
+        "legitimacy_score": 90,
+        "qualitative_summary": "Gitcoin Passport provides essential Sybil resistance infrastructure used by Octant, Gitcoin Grants, and dozens of other protocols. High contributor count, active commit cadence, and significant on-chain usage. Broadly used across the ecosystem with measurable public-good externalities.",
+        "red_flags": []
+      },
+      "scoring": {
+        "final_score": 87.7,
+        "sybil_score": 12,
+        "recommendation": "FUND — strong public-good signal",
+        "confidence": "high"
+      }
+    },
+    {
+      "name": "OpenZeppelin Contracts",
+      "url": "https://github.com/OpenZeppelin/openzeppelin-contracts",
+      "description": "Battle-tested smart contract libraries for Ethereum development.",
+      "collected": {
+        "github_stars": 25400,
+        "commits_90d": 142,
+        "contributors": 310,
+        "grants_received": 180000,
+        "on_chain_activity": 9200,
+        "governance_participation": 45.0,
+        "sybil_score": 5
+      },
+      "analysis": {
+        "impact_score": 95,
+        "legitimacy_score": 96,
+        "qualitative_summary": "OpenZeppelin Contracts underpins the vast majority of deployed Ethereum smart contracts. 25k+ GitHub stars and 300+ contributors reflect unmatched adoption. Lower governance participation score is expected for infrastructure tooling. Extremely high legitimacy; zero red flags.",
+        "red_flags": []
+      },
+      "scoring": {
+        "final_score": 94.1,
+        "sybil_score": 5,
+        "recommendation": "FUND — strong public-good signal",
+        "confidence": "high"
+      }
+    },
+    {
+      "name": "Rotki",
+      "url": "https://github.com/rotki/rotki",
+      "description": "Open-source, privacy-preserving portfolio tracker and accounting tool.",
+      "collected": {
+        "github_stars": 2830,
+        "commits_90d": 187,
+        "contributors": 62,
+        "grants_received": 75000,
+        "on_chain_activity": 210,
+        "governance_participation": 38.0,
+        "sybil_score": 19
+      },
+      "analysis": {
+        "impact_score": 72,
+        "legitimacy_score": 82,
+        "qualitative_summary": "Rotki is a well-maintained open-source tool serving thousands of users who prioritise financial privacy. Consistent development cadence and a healthy contributor base. Lower on-chain activity reflects its off-chain nature. Grants received are modest relative to scope; could benefit from larger Octant allocation.",
+        "red_flags": []
+      },
+      "scoring": {
+        "final_score": 74.8,
+        "sybil_score": 19,
+        "recommendation": "FUND — strong public-good signal",
+        "confidence": "high"
+      }
+    },
+    {
+      "name": "DefiLlama",
+      "url": "https://github.com/DefiLlama/DefiLlama-Adapters",
+      "description": "Open-source DeFi TVL aggregator and analytics dashboard.",
+      "collected": {
+        "github_stars": 3100,
+        "commits_90d": 420,
+        "contributors": 512,
+        "grants_received": 30000,
+        "on_chain_activity": 125,
+        "governance_participation": 22.0,
+        "sybil_score": 31
+      },
+      "analysis": {
+        "impact_score": 79,
+        "legitimacy_score": 71,
+        "qualitative_summary": "DefiLlama is the de-facto open-source analytics layer for DeFi. Extremely high contributor count driven by community adapter submissions. Very active commit history. Low grants received relative to usage suggests significant public funding gap. Moderate sybil score warrants routine contributor verification.",
+        "red_flags": ["Elevated sybil risk — large open contributor set warrants spot-checks"]
+      },
+      "scoring": {
+        "final_score": 67.7,
+        "sybil_score": 31,
+        "recommendation": "CONSIDER — moderate signal, request more info",
+        "confidence": "medium"
+      }
+    }
+  ]
+}

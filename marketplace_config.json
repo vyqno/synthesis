@@ -1,0 +1,78 @@
+{
+  "locus": {
+    "locus_wallet_id": "nexus-f5cfcb57",
+    "chain": "base",
+    "asset": "USDC",
+    "spending_controls": {
+      "per_tx_cap_usd": 10.0,
+      "daily_cap_usd": 50.0,
+      "whitelist": [
+        "bankr",
+        "zyfai",
+        "openserv"
+      ]
+    },
+    "status": "demo_mode"
+  },
+  "x402_services": [
+    {
+      "service": "lido-mcp",
+      "price_usdc": 0.01,
+      "per": "call",
+      "chain": "base"
+    },
+    {
+      "service": "trade-mcp",
+      "price_usdc": 0.05,
+      "per": "swap",
+      "chain": "base"
+    },
+    {
+      "service": "goods-mcp",
+      "price_usdc": 0.1,
+      "per": "evaluation",
+      "chain": "base"
+    },
+    {
+      "service": "identity-mcp",
+      "price_usdc": 0.001,
+      "per": "lookup",
+      "chain": "base"
+    },
+    {
+      "service": "secrets-mcp",
+      "price_usdc": 0.05,
+      "per": "proof",
+      "chain": "base"
+    }
+  ],
+  "slice_store": {
+    "store_name": "Nexus Agent Services",
+    "chain": "base",
+    "products": [
+      {
+        "name": "Public Goods Evaluation",
+        "price_usd": 0.1,
+        "mcp_tool": "score_public_good"
+      },
+      {
+        "name": "ZK Proof Generation",
+        "price_usd": 0.05,
+        "mcp_tool": "generate_proof"
+      },
+      {
+        "name": "Agent Coordination",
+        "price_usd": 0.25,
+        "mcp_tool": "dispatch_task"
+      },
+      {
+        "name": "ENS Resolution",
+        "price_usd": 0.001,
+        "mcp_tool": "resolve_ens"
+      }
+    ],
+    "hook": "NexusSliceHook.sol",
+    "hook_description": "20% discount for high-reputation agents (ERC-8004 score >80)"
+  },
+  "generated_at": "2026-03-20T09:10:35Z"
+}

@@ -66,6 +66,7 @@ class NexusBrain:
         self.bankr_key = os.getenv("BANKR_API_KEY", "")
         self.venice_key = os.getenv("VENICE_API_KEY", "")
         self.groq_key = os.getenv("GROQ_API_KEY", "")
+        self.venice_model = os.getenv("VENICE_MODEL", "venice-uncensored")
         self.total_spend_usd = 0.0
 
     def _chat(self, base_url: str, api_key: str, model: str, messages: list[dict], **kwargs) -> str:
@@ -108,8 +109,8 @@ class NexusBrain:
         # Private reasoning always goes through Venice
         if private and self.venice_key:
             try:
-                result = self._chat(self.VENICE_BASE, self.venice_key, "venice-uncensored", messages)
-                log_action("decide", {"model": "venice", "task": task[:100]})
+                result = self._chat(self.VENICE_BASE, self.venice_key, self.venice_model, messages)
+                log_action("decide", {"model": f"venice/{self.venice_model}", "task": task[:100]})
                 return result
             except Exception as e:
                 log_action("decide_fallback", {"error": str(e), "from": "venice"})
@@ -126,8 +127,8 @@ class NexusBrain:
         # Fallback to Venice
         if self.venice_key:
             try:
-                result = self._chat(self.VENICE_BASE, self.venice_key, "venice-uncensored", messages)
-                log_action("decide", {"model": "venice", "task": task[:100]})
+                result = self._chat(self.VENICE_BASE, self.venice_key, self.venice_model, messages)
+                log_action("decide", {"model": f"venice/{self.venice_model}", "task": task[:100]})
                 return result
             except Exception as e:
                 log_action("decide_fallback", {"error": str(e), "from": "venice"})
@@ -139,6 +140,39 @@ class NexusBrain:
             return result
 
         raise RuntimeError("No LLM backend available — set BANKR_API_KEY, VENICE_API_KEY, or GROQ_API_KEY")
+
+    def reason_privately(self, task: str, context: dict | None = None) -> str:
+        """
+        Always uses Venice for private, no-retention reasoning.
+        Never falls back to Bankr or Groq.
+
+        Args:
+            task: The task description or question
+            context: Additional context dict
+        Returns:
+            Venice LLM response string
+        """
+        if not self.venice_key:
+            raise RuntimeError("Venice API key not set — VENICE_API_KEY is required for private reasoning")
+
+        model = self.venice_model
+        log_action("venice_inference", {"task": task[:100], "model": model})
+
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You are Nexus, an autonomous AI agent. You manage a DeFi treasury, "
+                    "coordinate sub-agents, and make decisions to maximize value for the network. "
+                    "Be concise and action-oriented."
+                ),
+            }
+        ]
+        if context:
+            messages.append({"role": "user", "content": f"Context: {json.dumps(context)}"})
+        messages.append({"role": "user", "content": task})
+
+        return self._chat(self.VENICE_BASE, self.venice_key, model, messages)
 
     def get_compute_budget(self) -> float:
         """Returns available compute budget in ETH (reads from treasury module)."""

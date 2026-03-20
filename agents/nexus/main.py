@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import threading
 import time
 from datetime import datetime, timezone
 
@@ -51,6 +52,14 @@ async def autonomous_loop(brain: NexusBrain, treasury: NexusTreasury) -> None:
 
 
 def main() -> None:
+    import threading
+    from scripts.health_server import start_health_server
+    threading.Thread(target=start_health_server, daemon=True).start()
+
+    from agents.nexus.wallet import get_wallet_status, check_policy
+    wallet_status = get_wallet_status()
+    log_action("wallet_init", wallet_status)
+
     brain = NexusBrain()
     treasury = NexusTreasury()
 

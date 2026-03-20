@@ -1,3 +1,6 @@
 [package]
 name = "identity_proof"
 type = "bin"
+authors = ["nexus"]
+
+[dependencies]
