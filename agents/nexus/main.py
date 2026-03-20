@@ -16,6 +16,12 @@ load_dotenv()
 
 from agents.nexus.brain import NexusBrain, log_action
 from agents.nexus.treasury import NexusTreasury
+from agents.nexus.sub_agents import ALL_AGENTS, SubAgent
+
+# Sub-agent instances (initialised in main())
+sub_agents: list[SubAgent] = []
+
+BUDGET_PER_AGENT_ETH = 0.01
 
 
 async def autonomous_loop(brain: NexusBrain, treasury: NexusTreasury) -> None:
@@ -40,7 +46,12 @@ async def autonomous_loop(brain: NexusBrain, treasury: NexusTreasury) -> None:
                 )
                 log_action("allocation_decision", decision[:200])
 
-            # 3. Wait 5 minutes
+                # 3. Dispatch to relevant sub-agent based on decision content
+                for agent in sub_agents:
+                    if agent.agent_id in decision:
+                        asyncio.create_task(agent._safe_run_cycle())
+
+            # 4. Wait 5 minutes
             await asyncio.sleep(300)
 
         except KeyboardInterrupt:
@@ -52,8 +63,23 @@ async def autonomous_loop(brain: NexusBrain, treasury: NexusTreasury) -> None:
 
 
 def main() -> None:
+    global sub_agents
+
     import threading
-    from scripts.health_server import start_health_server
+    from scripts.health_server import app, start_health_server
+    from fastapi.responses import JSONResponse
+
+    # Instantiate sub-agents and give each a starting budget
+    sub_agents = [AgentClass() for AgentClass in ALL_AGENTS]
+    for agent in sub_agents:
+        agent.allocate_budget(BUDGET_PER_AGENT_ETH)
+
+    # Register /agents route on the health server
+    @app.get("/agents")
+    async def agents_status():
+        statuses = await asyncio.gather(*[a.get_status() for a in sub_agents])
+        return JSONResponse(content=list(statuses))
+
     threading.Thread(target=start_health_server, daemon=True).start()
 
     from agents.nexus.wallet import get_wallet_status, check_policy
@@ -66,6 +92,8 @@ def main() -> None:
     log_action("init", {
         "agent": "nexus",
         "started_at": datetime.now(timezone.utc).isoformat(),
+        "sub_agents": [a.agent_id for a in sub_agents],
+        "budget_per_agent_eth": BUDGET_PER_AGENT_ETH,
         "bankr_configured": bool(os.getenv("BANKR_API_KEY")),
         "venice_configured": bool(os.getenv("VENICE_API_KEY")),
         "groq_configured": bool(os.getenv("GROQ_API_KEY")),

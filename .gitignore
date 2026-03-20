@@ -11,3 +11,4 @@ circuits/*/target/
 *.lock
 .DS_Store
 .venv/
+.superpowers/
