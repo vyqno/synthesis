@@ -6,6 +6,8 @@ node_modules/
 .next/
 contracts/out/
 contracts/cache/
+contracts/lib/
 circuits/*/target/
 *.lock
 .DS_Store
+.venv/
