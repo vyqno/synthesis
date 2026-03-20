@@ -1,0 +1,3 @@
+[package]
+name = "identity_proof"
+type = "bin"

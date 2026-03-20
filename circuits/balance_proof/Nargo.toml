@@ -1,0 +1,3 @@
+[package]
+name = "balance_proof"
+type = "bin"

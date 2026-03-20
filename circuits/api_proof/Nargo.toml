@@ -1,0 +1,3 @@
+[package]
+name = "api_proof"
+type = "bin"

@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+.next/
+contracts/out/
+contracts/cache/
+circuits/*/target/
+*.lock
+.DS_Store
