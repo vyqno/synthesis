@@ -150,6 +150,47 @@ Covers **46 sponsor tracks** across [Synthesis 2026](https://synthesis.devfolio.
 
 ---
 
+---
+
+## Student Founder's Bet — College.xyz Track
+
+> **Track:** [Student Founder's Bet](https://www.college.xyz/bounties/26) × Synthesis 2026
+> **Sponsor:** College.xyz
+> **Prize:** $2,500
+
+### Builder
+
+**Hitesh P**
+BMS College of Engineering, Bengaluru
+B.Sc. (Business Systems) — Class of 2028
+Email: hiteshp.bs24@bmsce.ac.in
+Telegram: [@vyqno](https://t.me/vyqno)
+
+### Student Proof
+
+Active enrollment — Semester 4, all courses Registered:
+
+![Student Enrollment Proof](docs/student-proof.png)
+
+*BMS College of Engineering — course registration showing active enrollment (ID redacted per track rules)*
+
+### Why Nexus qualifies
+
+Nexus started as a genuine attempt to solve a real problem: **AI agents can't pay for themselves**. Every LLM call costs money, and every autonomous agent needs a human to top up a credit card. That's not autonomy — it's dependency.
+
+The solution: lock wstETH principal in a smart contract, let the agent spend only yield. The agent earns its own compute budget through DeFi, reasons privately through Venice, and coordinates a swarm of sub-agents through an open economy — all without touching the depositor's principal.
+
+This isn't a hackathon demo. It's a protocol:
+- 9 contracts (4 battle-tested + 5 novel DeFi primitives)
+- 142 tests passing (86 Foundry + 56 Python)
+- 8 MCP servers, 57 tools, 6 sub-agents
+- Real yield-splitting, real ZK proofs, real agent escrow
+- Covers 46 sponsor tracks across Synthesis 2026
+
+Built solo, in one week, at 3am between classes.
+
+---
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
