@@ -223,6 +223,61 @@ def get_sybil_score(address: str) -> dict:
     }
 
 
+# ─── Public handle_* wrappers (used by tests and external callers) ──────────
+
+async def handle_resolve_ens(arguments: dict) -> dict:
+    return resolve_ens(name=arguments["name"])
+
+
+async def handle_reverse_resolve(arguments: dict) -> dict:
+    return reverse_resolve(address=arguments["address"])
+
+
+async def handle_format_address(arguments: dict) -> dict:
+    return format_address(address=arguments["address"])
+
+
+async def handle_route_payment(arguments: dict) -> dict:
+    return route_payment(
+        name_or_address=arguments["name_or_address"],
+        amount_eth=float(arguments["amount_eth"]),
+    )
+
+
+async def handle_get_agent_reputation(arguments: dict) -> dict:
+    return get_agent_reputation(erc8004_id=arguments["erc8004_id"])
+
+
+async def handle_verify_self_identity(arguments: dict) -> dict:
+    return verify_self_identity(
+        agent_id=arguments["agent_id"],
+        proof=arguments["proof"],
+    )
+
+
+async def handle_register_agent_identity(arguments: dict) -> dict:
+    return register_agent_identity(
+        name=arguments["name"],
+        operator_wallet=arguments["operator_wallet"],
+    )
+
+
+async def handle_issue_erc8128_token(arguments: dict) -> dict:
+    return issue_erc8128_token(
+        agent_address=arguments["agent_address"],
+        scope=arguments["scope"],
+        expiry_seconds=int(arguments.get("expiry_seconds", 3600)),
+    )
+
+
+async def handle_verify_erc8128_token(arguments: dict) -> dict:
+    return verify_erc8128_token(token=arguments["token"])
+
+
+async def handle_get_sybil_score(arguments: dict) -> dict:
+    return get_sybil_score(address=arguments["address"])
+
+
 # ─── Entry point ────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

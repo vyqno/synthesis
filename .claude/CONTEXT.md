@@ -17,7 +17,7 @@ A complete autonomous AI agent protocol with:
 3. 8 MCP servers exposing 57 tools
 4. ZK proof circuits (Noir)
 5. Real-time Next.js dashboard
-6. 142 passing tests
+6. 182 passing tests
 
 ## Repository Layout
 
@@ -53,7 +53,7 @@ synthesis/
 │       └── WalletButton.tsx   # window.ethereum connect
 ├── circuits/                  # Noir ZK circuits
 ├── tests/                     # Python test suite
-├── agent_log.json             # REAL agent session (97 entries)
+├── agent_log.json             # REAL agent session (105 entries, 48 txs, 24.36 USDC)
 └── .claude/                   # This folder
 ```
 

@@ -3,6 +3,7 @@ Integration tests for all 8 Nexus MCP servers.
 Tests that each server imports cleanly and tools return valid JSON.
 Does NOT require real API keys — uses demo/mock modes.
 """
+import importlib.util
 import pytest
 import sys
 import json
@@ -17,72 +18,73 @@ if _site not in sys.path:
 sys.path.insert(1, str(ROOT))
 
 
+def _load_server(mcp_dir: str, unique_name: str):
+    """Load a server.py from an MCP directory using a unique module name to avoid cache collisions."""
+    server_path = ROOT / mcp_dir / "server.py"
+    spec = importlib.util.spec_from_file_location(unique_name, server_path)
+    mod = importlib.util.module_from_spec(spec)
+    # Temporarily add the mcp dir to sys.path so relative imports within server.py work
+    mcp_path = str(ROOT / mcp_dir)
+    sys.path.insert(0, mcp_path)
+    try:
+        spec.loader.exec_module(mod)
+    finally:
+        if mcp_path in sys.path:
+            sys.path.remove(mcp_path)
+    return mod
+
+
 class TestLidoMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/lido-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/lido-mcp", "lido_server")
 
     def test_server_imports(self):
         assert self.server is not None
 
     def test_get_balance_returns_dict(self):
         import asyncio
-        # Test handle functions directly
         result = asyncio.run(self.server.handle_get_balance({"address": "0x742d35Cc6634C0532925a3b8D4C9C8e2F1234567"}))
         assert isinstance(result, (dict, list, str))
 
     def test_get_vault_yield_structure(self):
         import asyncio
         result = asyncio.run(self.server.handle_get_vault_yield({"vault": "earneth"}))
-        # Should have APY field
         result_str = str(result)
         assert len(result_str) > 0
 
 
 class TestTreasuryMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/treasury-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/treasury-mcp", "treasury_server")
 
     def test_server_imports(self):
         assert self.server is not None
 
     def test_simulate_yield_loop_returns_steps(self):
         import asyncio
-        try:
-            result = asyncio.run(self.server.handle_simulate_yield_funding_loop({}))
-            result_str = str(result)
-            assert "yield" in result_str.lower() or "step" in result_str.lower() or len(result_str) > 10
-        except Exception as e:
-            # Demo mode is OK
-            assert True
+        result = asyncio.run(self.server.handle_simulate_yield_funding_loop({}))
+        assert isinstance(result, dict)
+        result_str = json.dumps(result).lower()
+        assert "yield" in result_str or "step" in result_str or "loop" in result_str
 
 
 class TestIdentityMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/identity-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/identity-mcp", "identity_server")
 
     def test_server_imports(self):
         assert self.server is not None
 
     def test_format_address_truncates(self):
-        import asyncio
-        try:
-            result = asyncio.run(self.server.handle_format_address({"address": "0x742d35Cc6634C0532925a3b8D4C9C8e2F1234567"}))
-            assert "..." in str(result) or "742d" in str(result)
-        except Exception:
-            assert True  # Demo fallback OK
+        result = self.server.format_address("0x742d35Cc6634C0532925a3b8D4C9C8e2F1234567")
+        assert isinstance(result, dict)
+        formatted = result.get("formatted", result.get("address", ""))
+        assert "..." in formatted or "742d" in formatted.lower() or len(formatted) < 42
 
 
 class TestTradeMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/trade-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/trade-mcp", "trade_server")
 
     def test_server_imports(self):
         assert self.server is not None
@@ -90,66 +92,57 @@ class TestTradeMCP:
 
 class TestStorageMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/storage-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/storage-mcp", "storage_server")
 
     def test_server_imports(self):
         assert self.server is not None
 
     def test_store_returns_cid(self):
-        import asyncio
-        try:
-            result = asyncio.run(self.server.handle_store({"data_json": '{"test": true}', "label": "test"}))
-            result_str = str(result)
-            assert "bafk" in result_str or "cid" in result_str.lower() or len(result_str) > 5
-        except Exception:
-            assert True
+        # store() generates a demo CID when FILECOIN_TOKEN is unset — no network call needed
+        result = self.server.store('{"test": true}', "test")
+        assert isinstance(result, dict)
+        assert "cid" in result
+        assert result["cid"].startswith("bafk")
+        assert result.get("stored") is True
 
 
 class TestCoordinateMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/coordinate-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/coordinate-mcp", "coordinate_server")
 
     def test_server_imports(self):
         assert self.server is not None
 
     def test_list_available_agents_returns_6(self):
         import asyncio
-        try:
-            result = asyncio.run(self.server.handle_list_available_agents({}))
-            result_str = str(result)
-            assert "nexus-trader" in result_str or "trader" in result_str
-        except Exception:
-            assert True
+        result = asyncio.run(self.server.handle_list_available_agents({}))
+        assert isinstance(result, list)
+        assert len(result) >= 6
+        agent_ids = [a.get("agent_id", "") if isinstance(a, dict) else str(a) for a in result]
+        all_ids = " ".join(agent_ids)
+        assert "trader" in all_ids or "nexus-trader" in all_ids
 
 
 class TestGoodsMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/goods-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/goods-mcp", "goods_server")
 
     def test_server_imports(self):
         assert self.server is not None
 
     def test_get_sybil_score_returns_number(self):
-        import asyncio
-        try:
-            result = asyncio.run(self.server.handle_get_sybil_score({"address": "0x742d35Cc6634C0532925a3b8D4C9C8e2F1234567"}))
-            result_str = str(result)
-            assert len(result_str) > 0
-        except Exception:
-            assert True
+        # get_sybil_score is a pure deterministic function — no network call
+        result = self.server.get_sybil_score("0x742d35Cc6634C0532925a3b8D4C9C8e2F1234567")
+        assert isinstance(result, dict)
+        assert "score" in result
+        assert isinstance(result["score"], int)
+        assert 0 <= result["score"] <= 100
+        assert "flags" in result
 
 
 class TestSecretsMCP:
     def setup_method(self):
-        sys.path.insert(0, str(ROOT / "mcp/secrets-mcp"))
-        import importlib
-        self.server = importlib.import_module("server")
+        self.server = _load_server("mcp/secrets-mcp", "secrets_server")
 
     def test_server_imports(self):
         assert self.server is not None

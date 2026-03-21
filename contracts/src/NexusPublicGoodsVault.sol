@@ -207,18 +207,21 @@ contract NexusPublicGoodsVault {
     // Admin
     // -----------------------------------------------------------------------
 
+    /// @notice Update the Octant and Gitcoin beneficiary addresses for yield distribution.
     function setBeneficiaries(address _octant, address _gitcoin) external onlyOwner {
         octantPool  = _octant;
         gitcoinAllo = _gitcoin;
         emit BeneficiariesUpdated(_octant, _gitcoin);
     }
 
+    /// @notice Update yield split between Octant and Gitcoin (must sum to 10000 bps).
     function setDistributionSplit(uint256 _octantBps, uint256 _gitcoinBps) external onlyOwner {
         require(_octantBps + _gitcoinBps == BPS_BASE, "Must sum to 10000");
         octantShareBps  = _octantBps;
         gitcoinShareBps = _gitcoinBps;
     }
 
+    /// @notice Update the minimum epoch duration (floor: 1 day).
     function setEpochDuration(uint256 _duration) external onlyOwner {
         require(_duration >= 1 days, "Epoch too short");
         epochDuration = _duration;

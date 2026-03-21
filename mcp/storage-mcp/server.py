@@ -311,6 +311,43 @@ def get_storage_balance() -> dict:
         }
 
 
+# ─── Public handle_* wrappers (used by tests and external callers) ──────────
+
+async def handle_store(arguments: dict) -> dict:
+    return store(
+        data_json=arguments["data_json"],
+        label=arguments["label"],
+    )
+
+
+async def handle_retrieve(arguments: dict) -> dict:
+    return retrieve(cid=arguments["cid"])
+
+
+async def handle_log_action(arguments: dict) -> dict:
+    return log_action(
+        agent_id=arguments["agent_id"],
+        action=arguments["action"],
+        result=arguments["result"],
+        metadata=arguments.get("metadata"),
+    )
+
+
+async def handle_get_agent_state(arguments: dict) -> dict:
+    return get_agent_state(agent_id=arguments["agent_id"])
+
+
+async def handle_list_logs(arguments: dict) -> dict:
+    return list_logs(
+        agent_id=arguments["agent_id"],
+        limit=int(arguments.get("limit", 20)),
+    )
+
+
+async def handle_get_storage_balance(arguments: dict) -> dict:
+    return get_storage_balance()
+
+
 # ─── Entry point ────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

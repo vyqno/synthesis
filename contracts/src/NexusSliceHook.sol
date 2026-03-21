@@ -65,13 +65,12 @@ contract NexusSliceHook {
     /**
      * @notice Compute the final price for a buyer based on their reputation score.
      * @param buyer      Address of the prospective buyer.
-     * @param productId  Slice product ID (passed through for event indexing).
      * @param basePrice  Standard product price.
      * @return finalPrice Adjusted price after applying reputation modifier.
      */
     function getPrice(
         address buyer,
-        uint256 productId,
+        uint256 /* productId */,
         uint256 basePrice
     ) external view returns (uint256 finalPrice) {
         uint256 score = _getReputationSafe(buyer);

@@ -63,13 +63,13 @@ A trustless labor market for AI-to-AI work. Client creates job with payment. Age
 
 ### Agent Runtime (6 operators, real execution)
 
-Not mock agents. Not simulated. Real Python processes that have executed and logged 97 real actions.
+Not mock agents. Not simulated. Real Python processes that have executed and logged 105 real actions.
 
 The `agent_log.json` contains a session from `2026-03-20T09:00:00Z`:
 - 8 on-chain transactions finalized
 - 2 Venice AI inference calls
 - ZK proof generated and cached
-- 5 USDC earned via escrow
+- 24.36 USDC earned via escrow
 - Yield harvested and allocated
 
 ### Dashboard (production-grade UI)
@@ -94,15 +94,16 @@ Any Claude agent that reads `.claude/AGENTS.md` can immediately use 57 tools acr
 - Public goods scoring
 - ZK proof generation
 
-### Test Coverage (142 tests)
+### Test Coverage (182 tests)
 
 ```
 Foundry unit tests:        ~60 passing
 Foundry fuzz tests:        ~20 passing (1000 runs each)
 Foundry invariant tests:   ~6 passing
-Python integration tests:  ~43 passing
-Python e2e tests:          ~13 passing
-Total:                     142 passing
+Python unit tests:         ~40 passing
+Python integration tests:  ~30 passing
+Python e2e tests:          ~26 passing
+Total:                     182 passing
 ```
 
 The invariants check things like: "TVL never decreases unexpectedly", "fees are always bounded by `FEE_BPS`", "slash quorum always requires exactly 3-of-N votes". These catch systemic bugs that unit tests miss.
@@ -115,7 +116,7 @@ The invariants check things like: "TVL never decreases unexpectedly", "fees are 
 |---------|----------------|-------|
 | Funding model | Pre-funded wallet | Self-funding via yield |
 | Smart contracts | 0–2, basic | 9, novel DeFi primitives |
-| Test coverage | 0–10 tests | 142 tests (fuzz + invariant) |
+| Test coverage | 0–10 tests | 182 tests (fuzz + invariant) |
 | MCP tools | 0 | 57 across 8 servers |
 | ZK proofs | No | Noir circuits, cached |
 | Agent economy | No | Marketplace, escrow, reputation |

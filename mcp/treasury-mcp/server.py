@@ -522,6 +522,48 @@ def _simulate_yield_funding_loop(state: dict) -> dict:
     }
 
 
+# ── Public handle_* wrappers (used by tests and external callers) ─────────────
+
+async def handle_get_treasury_status(arguments: dict) -> dict:
+    state = _load_state()
+    return _get_treasury_status(state)
+
+
+async def handle_allocate_budget(arguments: dict) -> dict:
+    state = _load_state()
+    return _allocate_budget(arguments, state)
+
+
+async def handle_deploy_zyfai_account(arguments: dict) -> dict:
+    state = _load_state()
+    return await _deploy_zyfai_account(arguments, state)
+
+
+async def handle_get_zyfai_earnings(arguments: dict) -> dict:
+    state = _load_state()
+    return await _get_zyfai_earnings(state)
+
+
+async def handle_get_agent_budget(arguments: dict) -> dict:
+    state = _load_state()
+    return _get_agent_budget(arguments, state)
+
+
+async def handle_log_inference_spend(arguments: dict) -> dict:
+    state = _load_state()
+    return _log_inference_spend(arguments, state)
+
+
+async def handle_get_bankr_usage(arguments: dict) -> dict:
+    state = _load_state()
+    return _get_bankr_usage(state)
+
+
+async def handle_simulate_yield_funding_loop(arguments: dict) -> dict:
+    state = _load_state()
+    return _simulate_yield_funding_loop(state)
+
+
 # ── Entry point ──────────────────────────────────────────────────────────────
 
 async def main() -> None:

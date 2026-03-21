@@ -362,6 +362,42 @@ def publish_attestation(project: str, score: float) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Public handle_* wrappers (used by tests and external callers)
+# ---------------------------------------------------------------------------
+
+async def handle_collect_project_data(arguments: dict) -> dict:
+    return await collect_project_data(
+        project_url_or_address=arguments["project_url_or_address"]
+    )
+
+
+async def handle_analyze_project(arguments: dict) -> dict:
+    return await analyze_project(data=arguments["data"])
+
+
+async def handle_get_sybil_score(arguments: dict) -> dict:
+    return get_sybil_score(address=arguments["address"])
+
+
+async def handle_score_public_good(arguments: dict) -> dict:
+    return await score_public_good(project_url=arguments["project_url"])
+
+
+async def handle_recommend_allocation(arguments: dict) -> list:
+    return await recommend_allocation(
+        projects=arguments["projects"],
+        total_budget_usd=float(arguments["total_budget_usd"]),
+    )
+
+
+async def handle_publish_attestation(arguments: dict) -> dict:
+    return publish_attestation(
+        project=arguments["project"],
+        score=float(arguments["score"]),
+    )
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 

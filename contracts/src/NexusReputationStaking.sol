@@ -252,6 +252,7 @@ contract NexusReputationStaking {
     // Admin
     // -----------------------------------------------------------------------
 
+    /// @notice Add an address to the slash validator set.
     function addValidator(address validator) external onlyOwner {
         require(!validators[validator], "Already validator");
         validators[validator] = true;
@@ -259,6 +260,7 @@ contract NexusReputationStaking {
         emit ValidatorAdded(validator);
     }
 
+    /// @notice Remove an address from the slash validator set.
     function removeValidator(address validator) external onlyOwner {
         require(validators[validator], "Not a validator");
         validators[validator] = false;
@@ -266,10 +268,12 @@ contract NexusReputationStaking {
         emit ValidatorRemoved(validator);
     }
 
+    /// @notice Update the public goods vault address that receives 50% of slashed stake.
     function setPublicGoodsVault(address _vault) external onlyOwner {
         publicGoodsVault = _vault;
     }
 
+    /// @notice Update the AgentIdentity registry address used for reputation checks.
     function setAgentIdentity(address _identity) external onlyOwner {
         agentIdentity = _identity;
     }

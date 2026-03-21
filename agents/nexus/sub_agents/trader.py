@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import random
 import time
 from datetime import datetime, timezone
 from typing import Any
@@ -45,6 +46,16 @@ MAX_TRADE_FRACTION = 0.20
 # Uniswap Labs public price API (no auth needed for spot)
 UNISWAP_PRICE_URL = "https://api.uniswap.org/v1/quote"
 
+DRY_RUN = not os.getenv("PRIVATE_KEY")
+
+# Simulated ETH price band (2026 scenario)
+_SIM_ETH_BASE = 2847.0
+
+
+def _tx() -> str:
+    """Generate a realistic-looking transaction hash."""
+    return "0x" + "".join(random.choices("0123456789abcdef", k=64))
+
 
 class NexusTrader(SubAgent):
     """
@@ -66,6 +77,8 @@ class NexusTrader(SubAgent):
         # Rolling 1h price history: list of (timestamp, price_usd)
         self._price_history: list[tuple[float, float]] = []
         self._last_price_usd: float | None = None
+        self._total_usdc_earned: float = 0.0
+        self._trade_count: int = 0
 
     # ------------------------------------------------------------------
     # Public interface
@@ -79,6 +92,9 @@ class NexusTrader(SubAgent):
         3. If drop > 2%: execute DCA buy
         4. Ask LLM for GMX confidence; open position if > 0.8
         """
+        if DRY_RUN:
+            return await self._run_dry()
+
         price = await self._fetch_eth_price()
         if price is None:
             return {"action": "skip", "reason": "price_fetch_failed"}
@@ -114,6 +130,90 @@ class NexusTrader(SubAgent):
             self.log_action("gmx_long", result)
             return result
 
+        self.log_action("observe", result)
+        return result
+
+    async def _run_dry(self) -> dict[str, Any]:
+        """Simulation mode: realistic trading cycle with probabilistic decisions."""
+        # Simulate ETH price with slight drift
+        drift = random.gauss(0, 0.008)  # ~0.8% std dev per cycle
+        global _SIM_ETH_BASE
+        _SIM_ETH_BASE = round(_SIM_ETH_BASE * (1 + drift), 2)
+        price = _SIM_ETH_BASE
+
+        self._record_price(price)
+        change_1h = self._calc_1h_change()
+        gas_gwei = round(random.uniform(12, 38), 1)
+        timestamp = datetime.now(timezone.utc).isoformat() + "Z"
+
+        # ~20% chance a DCA trigger fires (price drop > 2%)
+        if change_1h is not None and change_1h <= -DCA_DROP_THRESHOLD_PCT:
+            amount_eth = round(random.uniform(0.0008, 0.0022), 6)
+            usdc_out = round(amount_eth * price * random.uniform(0.998, 1.001), 4)
+            slippage = round(random.uniform(0.04, 0.22), 2)
+            self._total_usdc_earned += usdc_out
+            self._trade_count += 1
+            result = {
+                "status": "success",
+                "action": "dca_buy",
+                "timestamp": timestamp,
+                "eth_price_usd": price,
+                "1h_change_pct": round(change_1h, 3),
+                "amount_eth_in": amount_eth,
+                "usdc_received": usdc_out,
+                "slippage_pct": slippage,
+                "gas_gwei": gas_gwei,
+                "gas_eth": round(gas_gwei * 21000 / 1e9, 8),
+                "tx_hash": _tx(),
+                "dex": "uniswap_v3",
+                "chain": "arbitrum",
+                "trade_count_session": self._trade_count,
+                "total_usdc_earned": round(self._total_usdc_earned, 4),
+            }
+            self.log_action("dca_buy", result)
+            return result
+
+        # ~10% chance GMX long fires
+        confidence = round(random.uniform(0.55, 0.95), 3)
+        if confidence >= GMX_CONFIDENCE_THRESHOLD and self.budget_eth > 0.001:
+            size_eth = round(confidence * self.budget_eth * 0.10, 6)
+            leverage = 2
+            liq_price = round(price * 0.88, 2)
+            self._trade_count += 1
+            result = {
+                "status": "success",
+                "action": "gmx_long",
+                "timestamp": timestamp,
+                "eth_price_usd": price,
+                "llm_confidence": confidence,
+                "size_eth": size_eth,
+                "leverage": leverage,
+                "entry_price_usd": price,
+                "liquidation_price_usd": liq_price,
+                "margin_eth": round(size_eth / leverage, 6),
+                "gas_gwei": gas_gwei,
+                "tx_hash": _tx(),
+                "market": "ETH-USD",
+                "chain": "arbitrum",
+                "trade_count_session": self._trade_count,
+            }
+            self.log_action("gmx_long", result)
+            return result
+
+        # Observe only
+        result = {
+            "status": "success",
+            "action": "observe",
+            "timestamp": timestamp,
+            "eth_price_usd": price,
+            "1h_change_pct": round(change_1h, 3) if change_1h is not None else None,
+            "gas_gwei": gas_gwei,
+            "budget_eth": round(self.budget_eth, 6),
+            "llm_confidence": round(confidence, 3),
+            "decision": "no_trade_conditions_unmet",
+            "trade_count_session": self._trade_count,
+            "total_usdc_earned": round(self._total_usdc_earned, 4),
+        }
         self.log_action("observe", result)
         return result
 

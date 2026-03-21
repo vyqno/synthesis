@@ -49,3 +49,51 @@ def test_agent_budget_tracking():
     budget = treasury.get_agent_budget("nexus-scorer")
     assert budget["allocated_eth"] == pytest.approx(0.002)
     assert budget["spent_eth"] > 0
+
+
+def test_get_yield_balance_demo_mode():
+    """get_yield_balance returns positive demo value without contract."""
+    treasury = NexusTreasury()
+    treasury.contract = None
+    balance = treasury.get_yield_balance()
+    assert isinstance(balance, float)
+    assert balance > 0.0
+
+
+def test_treasury_status_available_eth():
+    """available_eth decreases after allocation."""
+    treasury = NexusTreasury()
+    treasury.contract = None
+
+    initial = treasury.get_treasury_status()["available_eth"]
+    treasury.allocate_budget("nexus-keeper", 0.001)
+    after = treasury.get_treasury_status()["available_eth"]
+
+    assert after < initial
+    assert pytest.approx(initial - after, abs=1e-9) == 0.001
+
+
+def test_multiple_agents_allocation():
+    """Multiple agents can each receive a budget slice."""
+    treasury = NexusTreasury()
+    treasury.contract = None
+
+    treasury.allocate_budget("nexus-trader", 0.001)
+    treasury.allocate_budget("nexus-scorer", 0.0005)
+
+    status = treasury.get_treasury_status()
+    assert "nexus-trader" in status["allocated_budgets"]
+    assert "nexus-scorer" in status["allocated_budgets"]
+    assert status["total_allocated_eth"] == pytest.approx(0.0015)
+
+
+def test_bankr_usage_tracks_multiple_models():
+    """Bankr usage dict tracks each inference model independently."""
+    treasury = NexusTreasury()
+    treasury.log_inference_spend("nexus-trader", "bankr/claude", 800, 0.02)
+    treasury.log_inference_spend("nexus-scorer", "venice", 600, 0.015)
+
+    usage = treasury.get_bankr_usage()
+    assert usage["total_spend_usd"] == pytest.approx(0.035)
+    assert "bankr/claude" in usage["by_model"]
+    assert "venice" in usage["by_model"]

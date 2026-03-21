@@ -116,20 +116,24 @@ contract AgentTreasury {
         IERC20(WSTETH).transfer(owner, amount);
     }
 
+    /// @notice Update the maximum wstETH amount the agent may withdraw per transaction.
     function setPerTxCap(uint256 newCap) external onlyOwner {
         perTxCap = newCap;
         emit CapUpdated(newCap);
     }
 
+    /// @notice Update the minimum seconds required between yield withdrawals.
     function setTimeWindow(uint256 newWindow) external onlyOwner {
         timeWindow = newWindow;
     }
 
+    /// @notice Add or remove an address from the yield recipient whitelist.
     function setRecipient(address recipient, bool allowed) external onlyOwner {
         recipientWhitelist[recipient] = allowed;
         emit WhitelistUpdated(recipient, allowed);
     }
 
+    /// @notice Update the agent address authorised to withdraw yield.
     function setAgent(address newAgent) external onlyOwner {
         agent = newAgent;
         emit AgentUpdated(newAgent);

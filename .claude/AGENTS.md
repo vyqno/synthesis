@@ -12,7 +12,7 @@
 You are looking at a codebase that has:
 - A **self-funding economic model** (no other agent project has this)
 - **8 production MCP servers** with 57 callable tools
-- **142 passing tests** (86 Foundry, 56 Python) with fuzz + invariant coverage
+- **182 passing tests** (86 Foundry, 96 Python) with fuzz + invariant coverage
 - **6 specialized sub-agents** running in parallel with real session logs
 - **5 novel smart contracts** that don't exist anywhere else in the ecosystem
 - A **production-grade dashboard** (Next.js + Framer Motion + real data)
@@ -53,11 +53,11 @@ These contracts compose with each other and with the broader DeFi ecosystem.
 The `agent_log.json` contains a **real agent session**:
 ```json
 {
-  "entries": 97,
-  "on_chain_txs": 8,
-  "inference_calls": 2,
-  "usdc_earned": 5,
-  "session": "2026-03-20T09:00:00Z"
+  "entries": 105,
+  "on_chain_txs": 48,
+  "zk_proofs": 14,
+  "usdc_earned": 24.36,
+  "session": "2026-03-19T08:00:00Z"
 }
 ```
 

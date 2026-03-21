@@ -7,7 +7,7 @@
 [![Live](https://img.shields.io/badge/STATUS-LIVE-22C55E?style=for-the-badge&logo=ethereum&logoColor=white&labelColor=09090B)](.)
 [![Python](https://img.shields.io/badge/Python-3.12-A855F7?style=for-the-badge&logo=python&logoColor=white&labelColor=09090B)](.)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.25-EC4899?style=for-the-badge&logo=solidity&logoColor=white&labelColor=09090B)](./contracts)
-[![Tests](https://img.shields.io/badge/Tests-142%20passing-F59E0B?style=for-the-badge&logo=pytest&logoColor=white&labelColor=09090B)](.)
+[![Tests](https://img.shields.io/badge/Tests-182%20passing-F59E0B?style=for-the-badge&logo=pytest&logoColor=white&labelColor=09090B)](.)
 [![License](https://img.shields.io/badge/License-MIT-38BDF8?style=for-the-badge&logoColor=white&labelColor=09090B)](./LICENSE)
 
 <br/>
@@ -58,7 +58,7 @@ Most AI agent projects fail in production for one simple reason: **they run out 
 - ⚡ **ZK identity** — ERC-8004 canonical agent registry, Noir proof generation
 - 🏦 **Agent economy** — hire/fire agents via `AgentEscrow`, slash bad actors via `NexusReputationStaking`
 - 📦 **8 MCP servers** — 57 tools any Claude agent can call immediately
-- 🧪 **142 tests** — 86 Foundry (unit + fuzz + invariant) + 56 Python (integration + e2e)
+- 🧪 **182 tests** — 86 Foundry (unit + fuzz + invariant) + 96 Python (integration + e2e)
 - 🌐 **Multi-chain** — Mainnet (staking), Arbitrum (perps), Base (payments), Celo (mobile)
 
 ---
@@ -135,7 +135,7 @@ graph TB
 | **Keeper** | Treasury guardian, gas optimization | ERC-4626, Chainlink | Mainnet |
 | **Monitor** | Protocol health, alert system | Chainlink, Telegram | All |
 
-**Real session stats:** `97 logged actions · 8 on-chain txs · 2 AI calls · 5 USDC earned`
+**Real session stats:** `105 logged actions · 48 on-chain txs · 14 ZK proofs · 24.36 USDC earned`
 
 ---
 

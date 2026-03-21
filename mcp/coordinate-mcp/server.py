@@ -571,6 +571,61 @@ def _list_available_agents() -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
+# Public handle_* wrappers (used by tests and external callers)
+# ---------------------------------------------------------------------------
+
+async def handle_dispatch_task(arguments: dict) -> dict:
+    return await _dispatch_task(
+        agent_id=arguments["agent_id"],
+        task_description=arguments["task_description"],
+        budget_eth=float(arguments["budget_eth"]),
+    )
+
+
+async def handle_delegate_task(arguments: dict) -> dict:
+    return await _delegate_task(
+        task=arguments["task"],
+        caveats=arguments["caveats"],
+        expiry_hours=int(arguments.get("expiry_hours", 24)),
+    )
+
+
+async def handle_create_escrow(arguments: dict) -> dict:
+    return await _create_escrow(
+        service_description=arguments["service_description"],
+        amount_eth=float(arguments["amount_eth"]),
+        arbiter=arguments.get("arbiter", "nexus-arbiter"),
+    )
+
+
+async def handle_submit_delivery(arguments: dict) -> dict:
+    return await _submit_delivery(
+        escrow_id=arguments["escrow_id"],
+        proof_type=arguments["proof_type"],
+        proof_data=arguments["proof_data"],
+    )
+
+
+async def handle_hire_olas_agent(arguments: dict) -> dict:
+    return await _hire_olas_agent(
+        mech_id=arguments["mech_id"],
+        request_data=arguments["request_data"],
+    )
+
+
+async def handle_send_message(arguments: dict) -> dict:
+    return await _send_message(
+        to_agent_ens=arguments["to_agent_ens"],
+        content=arguments["content"],
+        payment_usdc=float(arguments.get("payment_usdc", 0)),
+    )
+
+
+async def handle_list_available_agents(arguments: dict) -> list:
+    return _list_available_agents()
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 

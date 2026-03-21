@@ -20,17 +20,16 @@ pytestmark = pytest.mark.asyncio
 
 
 async def test_brain_routing():
-    """Brain correctly routes tasks to sub-agents."""
+    """Brain correctly routes tasks to sub-agents via mocked LLM."""
+    from unittest.mock import patch
     from agents.nexus.brain import NexusBrain
     brain = NexusBrain()
-    # Without API keys, brain may raise or return a fallback decision — both are valid
-    try:
-        result = await brain.decide({"yield_balance": 0.05, "context": "test"})
-        assert isinstance(result, dict)
-        assert "action" in result or "error" in result or result is not None
-    except RuntimeError as exc:
-        # Expected when no LLM backend keys are configured
-        assert "LLM" in str(exc) or "API" in str(exc) or "backend" in str(exc)
+    # Mock _chat so no real HTTP call is made
+    with patch.object(brain, "_chat", return_value="nexus-trader"):
+        brain.bankr_key = "fake-key"
+        result = brain.decide("swap ETH for USDC")
+    assert isinstance(result, str)
+    assert len(result) > 0
 
 
 async def test_keeper_runs_without_rpc():
@@ -50,7 +49,9 @@ async def test_monitor_runs_without_telegram():
     monitor = NexusMonitor()
     result = await monitor.run_cycle()
     assert isinstance(result, dict)
-    assert "apy" in result or "error" in result
+    # Dry-run mode returns steth_apy_pct; live mode returns apy; error mode returns error
+    assert "steth_apy_pct" in result or "apy" in result or "error" in result
+    assert "action" in result or "status" in result
 
 
 async def test_prover_generates_mock_proof():

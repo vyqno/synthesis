@@ -153,11 +153,13 @@ contract NexusComputeCredit {
     // Admin
     // -----------------------------------------------------------------------
 
+    /// @notice Grant or revoke permission for a contract to call burnForService.
     function authorizeService(address service, bool authorized) external onlyOwner {
         authorizedServices[service] = authorized;
         emit ServiceAuthorized(service, authorized);
     }
 
+    /// @notice Update the agent treasury address that receives redemption fees.
     function setAgentTreasury(address _treasury) external onlyOwner {
         agentTreasury = _treasury;
         emit TreasuryUpdated(_treasury);

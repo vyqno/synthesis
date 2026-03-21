@@ -53,7 +53,7 @@ contract AgentIdentity {
 
     event IdentityRegistered(uint256 indexed agentId, string name, address indexed operator);
     event ReputationUpdated(uint256 indexed agentId, uint256 oldScore, uint256 newScore);
-    event PrimitiveLInked(uint256 indexed agentId, string primitiveType, address primitiveAddress);
+    event PrimitiveLinked(uint256 indexed agentId, string primitiveType, address primitiveAddress);
     event UpdaterSet(address indexed updater, bool authorized);
 
     // -------------------------------------------------------------------------
@@ -144,7 +144,7 @@ contract AgentIdentity {
             primitiveAddress: primitiveAddress
         }));
 
-        emit PrimitiveLInked(agentId, primitiveType, primitiveAddress);
+        emit PrimitiveLinked(agentId, primitiveType, primitiveAddress);
     }
 
     /**
@@ -213,6 +213,7 @@ contract AgentIdentity {
     // Admin
     // -------------------------------------------------------------------------
 
+    /// @notice Grant or revoke reputation update privileges for an address.
     function setUpdater(address updater, bool authorized) external onlyOwner {
         reputationUpdaters[updater] = authorized;
         emit UpdaterSet(updater, authorized);

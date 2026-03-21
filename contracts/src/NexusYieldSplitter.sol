@@ -202,6 +202,7 @@ contract NexusYieldSplitter {
     // Admin
     // -----------------------------------------------------------------------
 
+    /// @notice Update the agent treasury that receives harvested wstETH yield.
     function setAgentTreasury(address _treasury) external onlyOwner {
         agentTreasury = _treasury;
         emit TreasuryUpdated(_treasury);

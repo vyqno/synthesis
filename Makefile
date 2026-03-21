@@ -3,7 +3,8 @@
 
 .PHONY: help install dev test lint fmt clean build \
         test-contracts test-agents test-e2e fuzz invariant \
-        deploy-sepolia deploy-arbitrum deploy-base deploy-mainnet \
+        deploy-sepolia deploy-arbitrum deploy-base deploy-mainnet deploy-local \
+        deploy-dry-run verify-deployment gas-report \
         agent dashboard anvil submit
 
 # ── Colors ────────────────────────────────────────────────────────────────────
@@ -167,19 +168,37 @@ clean: ## Clean all build artifacts
 	@echo "$(GREEN)✓ Clean$(RESET)"
 
 # ── Deployment ────────────────────────────────────────────────────────────────
-deploy-sepolia: check-env build-contracts ## Deploy to Sepolia testnet
+deploy-sepolia: check-env build-contracts ## Deploy all 9 contracts to Sepolia testnet
 	@echo "$(YELLOW)→ Deploying to Sepolia...$(RESET)"
-	cd $(CONTRACTS_DIR) && $(FORGE) script script/Deploy.s.sol \
+	cd $(CONTRACTS_DIR) && $(FORGE) script script/DeployAll.s.sol \
 		--rpc-url $(SEPOLIA_RPC_URL) \
 		--broadcast \
 		--verify \
 		--etherscan-api-key $(ETHERSCAN_API_KEY) \
 		-vvvv
 	@echo "$(GREEN)✓ Deployed to Sepolia$(RESET)"
+	@make verify-deployment
 
-deploy-arbitrum: check-env build-contracts ## Deploy to Arbitrum (NexusArbiter + AgentEscrow)
+deploy-dry-run: ## Simulate full deployment (no broadcast, no gas cost)
+	@echo "$(BLUE)→ Dry-run deployment (no broadcast)...$(RESET)"
+	cd $(CONTRACTS_DIR) && $(FORGE) script script/DeployAll.s.sol \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		-vvvv
+	@echo "$(GREEN)✓ Dry-run complete$(RESET)"
+
+verify-deployment: ## Verify deployed contracts against broadcast log
+	@echo "$(BLUE)→ Verifying deployment...$(RESET)"
+	$(PYTHON) $(SCRIPTS_DIR)/verify_deployment.py
+	@echo "$(GREEN)✓ Verification complete$(RESET)"
+
+gas-report: ## Run tests and produce per-function gas report
+	@echo "$(BLUE)→ Generating gas report...$(RESET)"
+	cd $(CONTRACTS_DIR) && $(FORGE) test --gas-report 2>&1 | tee gas-report.txt
+	@echo "$(GREEN)✓ Gas report saved to gas-report.txt$(RESET)"
+
+deploy-arbitrum: check-env build-contracts ## Deploy all 9 contracts to Arbitrum
 	@echo "$(YELLOW)→ Deploying to Arbitrum...$(RESET)"
-	cd $(CONTRACTS_DIR) && $(FORGE) script script/Deploy.s.sol \
+	cd $(CONTRACTS_DIR) && $(FORGE) script script/DeployAll.s.sol \
 		--rpc-url $(ARBITRUM_RPC_URL) \
 		--broadcast \
 		--verify \
@@ -187,9 +206,9 @@ deploy-arbitrum: check-env build-contracts ## Deploy to Arbitrum (NexusArbiter +
 		-vvvv
 	@echo "$(GREEN)✓ Deployed to Arbitrum$(RESET)"
 
-deploy-base: check-env build-contracts ## Deploy to Base (x402 payments)
+deploy-base: check-env build-contracts ## Deploy all 9 contracts to Base
 	@echo "$(YELLOW)→ Deploying to Base...$(RESET)"
-	cd $(CONTRACTS_DIR) && $(FORGE) script script/Deploy.s.sol \
+	cd $(CONTRACTS_DIR) && $(FORGE) script script/DeployAll.s.sol \
 		--rpc-url $(BASE_RPC_URL) \
 		--broadcast \
 		--verify \
@@ -197,10 +216,10 @@ deploy-base: check-env build-contracts ## Deploy to Base (x402 payments)
 		-vvvv
 	@echo "$(GREEN)✓ Deployed to Base$(RESET)"
 
-deploy-mainnet: check-env build-contracts ## Deploy to Ethereum mainnet (CAREFUL)
+deploy-mainnet: check-env build-contracts ## Deploy all 9 contracts to Ethereum mainnet (CAREFUL)
 	@echo "$(YELLOW)⚠ MAINNET DEPLOYMENT — are you sure? [ctrl-c to abort]$(RESET)"
 	@sleep 5
-	cd $(CONTRACTS_DIR) && $(FORGE) script script/Deploy.s.sol \
+	cd $(CONTRACTS_DIR) && $(FORGE) script script/DeployAll.s.sol \
 		--rpc-url $(MAINNET_RPC_URL) \
 		--broadcast \
 		--verify \
@@ -208,8 +227,8 @@ deploy-mainnet: check-env build-contracts ## Deploy to Ethereum mainnet (CAREFUL
 		-vvvv
 	@echo "$(GREEN)✓ Deployed to Mainnet$(RESET)"
 
-deploy-local: ## Deploy to local Anvil (requires make anvil running)
-	cd $(CONTRACTS_DIR) && $(FORGE) script script/Deploy.s.sol \
+deploy-local: ## Deploy all 9 contracts to local Anvil (requires make anvil running)
+	cd $(CONTRACTS_DIR) && $(FORGE) script script/DeployAll.s.sol \
 		--rpc-url http://localhost:8545 \
 		--broadcast \
 		--private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80

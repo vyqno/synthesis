@@ -314,6 +314,7 @@ contract AgentEscrow {
     // Admin
     // -----------------------------------------------------------------------
 
+    /// @notice Update the NexusArbiter contract used to verify ZK delivery proofs.
     function setArbiter(address _arbiter) external onlyOwner {
         arbiter = INexusArbiter(_arbiter);
     }
