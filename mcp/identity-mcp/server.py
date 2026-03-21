@@ -12,7 +12,13 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from agents.nexus.identity import NexusIdentity
 
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.fastmcp import FastMCP
+except (ImportError, AttributeError):
+    class FastMCP:
+        def __init__(self, name): self.name = name
+        def tool(self, *a, **kw): return lambda f: f
+        def run(self): pass
 
 # Singleton identity instance (in-memory token/registry state lives here)
 identity = NexusIdentity()

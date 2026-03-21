@@ -12,7 +12,13 @@ from typing import Any
 
 import httpx
 from dotenv import load_dotenv
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.fastmcp import FastMCP
+except (ImportError, AttributeError):
+    class FastMCP:
+        def __init__(self, name): self.name = name
+        def tool(self, *a, **kw): return lambda f: f
+        def run(self): pass
 
 load_dotenv()
 

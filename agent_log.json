@@ -26,7 +26,7 @@
       "t": "09:00:09",
       "agent": "nexus",
       "action": "venice_inference",
-      "result": "Private reasoning: yield is 10.5% above benchmark (3.8%). Optimal split — allocate 0.001 ETH to nexus-trader for USDC liquidity, hold remaining 0.0032 ETH in wstETH to compound. Proceed with allocation.",
+      "result": "Private reasoning: yield is 10.5% above benchmark (3.8%). Optimal split \u2014 allocate 0.001 ETH to nexus-trader for USDC liquidity, hold remaining 0.0032 ETH in wstETH to compound. Proceed with allocation.",
       "tool": "venice_inference",
       "model": "venice/llama-3.3-70b",
       "tokens_used": 412,
@@ -54,7 +54,13 @@
       "data": {
         "sub_agent": "nexus-trader",
         "task": "swap",
-        "params": {"from": "ETH", "to": "USDC", "amount": "0.001", "chain": "base", "dex": "uniswap_v3"}
+        "params": {
+          "from": "ETH",
+          "to": "USDC",
+          "amount": "0.001",
+          "chain": "base",
+          "dex": "uniswap_v3"
+        }
       }
     },
     {
@@ -114,11 +120,11 @@
       "t": "09:01:19",
       "agent": "nexus",
       "action": "hire_olas_agent",
-      "result": "Submitted mech request to Olas marketplace (agent-id: 2). Task: evaluate public good project 'DecentraSeed — open-source seed funding for climate DAO'. Request ID: mech-0x4f9a.",
+      "result": "Submitted mech request to Olas marketplace (agent-id: 2). Task: evaluate public good project 'DecentraSeed \u2014 open-source seed funding for climate DAO'. Request ID: mech-0x4f9a.",
       "tool": "hire_olas_agent",
       "data": {
         "mech_agent_id": 2,
-        "prompt": "Evaluate public good impact of: DecentraSeed — open-source seed funding infrastructure for climate-focused DAOs. Score 0-100 across sustainability, reach, and open-source quality.",
+        "prompt": "Evaluate public good impact of: DecentraSeed \u2014 open-source seed funding infrastructure for climate-focused DAOs. Score 0-100 across sustainability, reach, and open-source quality.",
         "request_id": "mech-0x4f9a",
         "cost_xdai": "0.01"
       },
@@ -128,12 +134,16 @@
       "t": "09:01:47",
       "agent": "nexus",
       "action": "score_public_good",
-      "result": "Olas mech returned evaluation. DecentraSeed score: 78/100. Breakdown — sustainability: 82, reach: 74, open-source quality: 79. Recommendation: fund at $500 tier.",
+      "result": "Olas mech returned evaluation. DecentraSeed score: 78/100. Breakdown \u2014 sustainability: 82, reach: 74, open-source quality: 79. Recommendation: fund at $500 tier.",
       "tool": "score_public_good",
       "data": {
         "project": "DecentraSeed",
         "score": 78,
-        "breakdown": {"sustainability": 82, "reach": 74, "open_source_quality": 79},
+        "breakdown": {
+          "sustainability": 82,
+          "reach": 74,
+          "open_source_quality": 79
+        },
         "recommendation": "fund_500_usd"
       }
     },
@@ -159,7 +169,9 @@
       "tool": "generate_proof",
       "data": {
         "circuit": "api_proof",
-        "public_inputs": {"endpoint_hash": "0x9f3a1c7e2b4d6f8a0c2e4b6d8f0a2c4e"},
+        "public_inputs": {
+          "endpoint_hash": "0x9f3a1c7e2b4d6f8a0c2e4b6d8f0a2c4e"
+        },
         "proof_size_kb": 2.1,
         "proving_time_s": 1.8
       }
@@ -182,7 +194,7 @@
       "t": "09:02:29",
       "agent": "nexus",
       "action": "verify_proof",
-      "result": "Proof verified on-chain via NexusArbiter. Verification gas: 312,000. Proof valid — escrow release triggered.",
+      "result": "Proof verified on-chain via NexusArbiter. Verification gas: 312,000. Proof valid \u2014 escrow release triggered.",
       "tool": "verify_proof",
       "data": {
         "circuit": "api_proof",
@@ -208,7 +220,7 @@
       "t": "09:02:45",
       "agent": "nexus",
       "action": "resolve_ens",
-      "result": "ENS nexus-agent.eth resolved to operator wallet 0x0000...0000 (placeholder — pending mainnet registration). Off-chain record propagation confirmed on Sepolia ENS fork.",
+      "result": "ENS nexus-agent.eth resolved to operator wallet 0x0000...0000 (placeholder \u2014 pending mainnet registration). Off-chain record propagation confirmed on Sepolia ENS fork.",
       "tool": "resolve_ens",
       "data": {
         "name": "nexus-agent.eth",
@@ -237,8 +249,16 @@
       "result": "Agent reputation fetched from EigenTrust registry. nexus-scorer: trust score 0.91 (based on 14 prior public-good evaluations, 0 disputes). nexus-trader: 0.87 (23 trades, 1 slippage breach).",
       "tool": "get_agent_reputation",
       "data": {
-        "nexus-scorer": {"trust_score": 0.91, "evaluations": 14, "disputes": 0},
-        "nexus-trader": {"trust_score": 0.87, "trades": 23, "breaches": 1}
+        "nexus-scorer": {
+          "trust_score": 0.91,
+          "evaluations": 14,
+          "disputes": 0
+        },
+        "nexus-trader": {
+          "trust_score": 0.87,
+          "trades": 23,
+          "breaches": 1
+        }
       }
     },
     {
@@ -263,9 +283,21 @@
       "tool": "recommend_allocation",
       "data": {
         "ranked_projects": [
-          {"name": "DecentraSeed", "score": 78, "recommended_usdc": "6"},
-          {"name": "OpenRetro", "score": 74, "recommended_usdc": "5"},
-          {"name": "EigenDA-OSS", "score": 71, "recommended_usdc": "4"}
+          {
+            "name": "DecentraSeed",
+            "score": 78,
+            "recommended_usdc": "6"
+          },
+          {
+            "name": "OpenRetro",
+            "score": 74,
+            "recommended_usdc": "5"
+          },
+          {
+            "name": "EigenDA-OSS",
+            "score": 71,
+            "recommended_usdc": "4"
+          }
         ],
         "total_usdc": "15"
       }
@@ -274,7 +306,7 @@
       "t": "09:04:31",
       "agent": "nexus",
       "action": "seal_function",
-      "result": "Venice Sealed Functions deployed. Wrapped bankr API key in TEE-sealed vault. Function ID: sealed-fn-bankr-01. Only nexus agent identity can unseal — key never exposed to host.",
+      "result": "Venice Sealed Functions deployed. Wrapped bankr API key in TEE-sealed vault. Function ID: sealed-fn-bankr-01. Only nexus agent identity can unseal \u2014 key never exposed to host.",
       "tool": "seal_function",
       "data": {
         "function_id": "sealed-fn-bankr-01",
@@ -322,6 +354,645 @@
         "yield_processed_eth": "0.0042",
         "usdc_earned": "5",
         "next_session": "2026-03-20T21:00:00Z"
+      }
+    },
+    {
+      "t": "17:12:21",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:12:23",
+      "agent": "nexus",
+      "action": "nexus-keeper.treasury_check",
+      "result": {
+        "gas_gwei": 20.0,
+        "deferred": false,
+        "reason": "gas OK",
+        "treasury": "not_configured",
+        "yield_threshold_eth": 0.01
+      }
+    },
+    {
+      "t": "17:12:24",
+      "agent": "nexus",
+      "action": "nexus-monitor.vault_health_check",
+      "result": {
+        "apy": 2.447,
+        "drop_pct": 0.0,
+        "alert": false,
+        "status": "ok"
+      }
+    },
+    {
+      "t": "17:12:24",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0xabcd",
+          "result_hash": "0xef01",
+          "timestamp": 1774026744,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "17:12:24",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0x1234",
+          "result_hash": "0x5678",
+          "timestamp": 100,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "17:12:24",
+      "agent": "nexus",
+      "action": "nexus-trader.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:03",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:04",
+      "agent": "nexus",
+      "action": "nexus-keeper.treasury_check",
+      "result": {
+        "gas_gwei": 20.0,
+        "deferred": false,
+        "reason": "gas OK",
+        "treasury": "not_configured",
+        "yield_threshold_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-monitor.vault_health_check",
+      "result": {
+        "apy": 2.447,
+        "drop_pct": 0.0,
+        "alert": false,
+        "status": "ok"
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0xabcd",
+          "result_hash": "0xef01",
+          "timestamp": 1774026785,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0x1234",
+          "result_hash": "0x5678",
+          "timestamp": 100,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-trader.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-staker.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-scorer.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-prover.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "17:13:05",
+      "agent": "nexus",
+      "action": "nexus-monitor.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:48",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:50",
+      "agent": "nexus",
+      "action": "nexus-keeper.treasury_check",
+      "result": {
+        "gas_gwei": 20.0,
+        "deferred": false,
+        "reason": "gas OK",
+        "treasury": "not_configured",
+        "yield_threshold_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-monitor.vault_health_check",
+      "result": {
+        "apy": 2.447,
+        "drop_pct": 0.0,
+        "alert": false,
+        "status": "ok"
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0xabcd",
+          "result_hash": "0xef01",
+          "timestamp": 1774061573,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0x1234",
+          "result_hash": "0x5678",
+          "timestamp": 100,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-trader.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-staker.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-scorer.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-prover.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:52:53",
+      "agent": "nexus",
+      "action": "nexus-monitor.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:29",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-keeper.treasury_check",
+      "result": {
+        "gas_gwei": 20.0,
+        "deferred": false,
+        "reason": "gas OK",
+        "treasury": "not_configured",
+        "yield_threshold_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-monitor.vault_health_check",
+      "result": {
+        "apy": 2.447,
+        "drop_pct": 0.0,
+        "alert": false,
+        "status": "ok"
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0xabcd",
+          "result_hash": "0xef01",
+          "timestamp": 1774061610,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0x1234",
+          "result_hash": "0x5678",
+          "timestamp": 100,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-trader.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-staker.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-scorer.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-prover.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "02:53:30",
+      "agent": "nexus",
+      "action": "nexus-monitor.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:34:54",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:34:56",
+      "agent": "nexus",
+      "action": "nexus-keeper.treasury_check",
+      "result": {
+        "gas_gwei": 20.0,
+        "deferred": false,
+        "reason": "gas OK",
+        "treasury": "not_configured",
+        "yield_threshold_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-monitor.vault_health_check",
+      "result": {
+        "apy": 2.447,
+        "drop_pct": 0.0,
+        "alert": false,
+        "status": "ok"
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0xabcd",
+          "result_hash": "0xef01",
+          "timestamp": 1774064101,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0x1234",
+          "result_hash": "0x5678",
+          "timestamp": 100,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-trader.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-staker.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-scorer.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-prover.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:01",
+      "agent": "nexus",
+      "action": "nexus-monitor.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:44",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:46",
+      "agent": "nexus",
+      "action": "nexus-keeper.treasury_check",
+      "result": {
+        "gas_gwei": 20.0,
+        "deferred": false,
+        "reason": "gas OK",
+        "treasury": "not_configured",
+        "yield_threshold_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-monitor.vault_health_check",
+      "result": {
+        "apy": 2.447,
+        "drop_pct": 0.0,
+        "alert": false,
+        "status": "ok"
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0xabcd",
+          "result_hash": "0xef01",
+          "timestamp": 1774064148,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-prover.proof_generated",
+      "result": {
+        "circuit": "api_proof",
+        "public_inputs": {
+          "endpoint_hash": "0x1234",
+          "result_hash": "0x5678",
+          "timestamp": 100,
+          "window_seconds": 60
+        }
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-trader.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-staker.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-scorer.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-keeper.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-prover.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
+      }
+    },
+    {
+      "t": "03:35:48",
+      "agent": "nexus",
+      "action": "nexus-monitor.budget_allocated",
+      "result": {
+        "added_eth": 0.01,
+        "total_budget_eth": 0.01
       }
     }
   ]

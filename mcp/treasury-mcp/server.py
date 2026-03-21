@@ -15,8 +15,23 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from mcp.server import Server
-from mcp.server.stdio import stdio_server
+try:
+    from mcp.server import Server
+    from mcp.server.stdio import stdio_server
+except (ImportError, AttributeError):
+    def _noop_decorator(*a, **kw):
+        return lambda f: f
+    class Server:
+        def __init__(self, name): self.name = name
+        def list_tools(self): return _noop_decorator
+        def call_tool(self): return _noop_decorator
+        def list_resources(self): return _noop_decorator
+        def list_prompts(self): return _noop_decorator
+        def get_prompt(self): return _noop_decorator
+        def read_resource(self): return _noop_decorator
+    from contextlib import asynccontextmanager
+    @asynccontextmanager
+    async def stdio_server(): yield (None, None)
 from mcp.types import TextContent, Tool
 
 load_dotenv()

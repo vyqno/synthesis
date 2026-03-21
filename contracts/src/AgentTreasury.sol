@@ -134,4 +134,25 @@ contract AgentTreasury {
         agent = newAgent;
         emit AgentUpdated(newAgent);
     }
+
+    // -----------------------------------------------------------------------
+    // ERC-4626 compatibility views
+    // -----------------------------------------------------------------------
+
+    /// @notice ERC-4626 compatibility view — total wstETH managed by this vault.
+    function totalAssets() external view returns (uint256) {
+        return IERC20(WSTETH).balanceOf(address(this));
+    }
+
+    /// @notice Max yield withdrawable in one call (ERC-4626 style, principal-protected).
+    function maxWithdraw(address /*owner_*/) external view returns (uint256) {
+        uint256 balance = IERC20(WSTETH).balanceOf(address(this));
+        return balance > principalShares ? balance - principalShares : 0;
+    }
+
+    /// @notice Preview yield available for withdrawal (principal-protected).
+    function previewYield() external view returns (uint256) {
+        uint256 balance = IERC20(WSTETH).balanceOf(address(this));
+        return balance > principalShares ? balance - principalShares : 0;
+    }
 }

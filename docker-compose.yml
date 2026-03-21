@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  # Local Ethereum node
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    command: anvil --host 0.0.0.0 --chain-id 31337 --block-time 2
+    ports:
+      - "8545:8545"
+    healthcheck:
+      test: ["CMD", "cast", "block-number", "--rpc-url", "http://localhost:8545"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Nexus agent
+  agent:
+    build: .
+    environment:
+      - DRY_RUN=${DRY_RUN:-true}
+      - BANKR_API_KEY=${BANKR_API_KEY}
+      - VENICE_API_KEY=${VENICE_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - SEPOLIA_RPC_URL=${SEPOLIA_RPC_URL:-http://anvil:8545}
+      - BASE_RPC_URL=${BASE_RPC_URL}
+      - ARBITRUM_RPC_URL=${ARBITRUM_RPC_URL}
+      - AGENT_TREASURY_ADDRESS=${AGENT_TREASURY_ADDRESS}
+      - AGENT_IDENTITY_ADDRESS=${AGENT_IDENTITY_ADDRESS:-0x8004A169FB4a3325136EB29fA0ceB6D2e539a432}
+    ports:
+      - "8080:8080"
+    depends_on:
+      anvil:
+        condition: service_healthy
+    volumes:
+      - ./agent_log.json:/app/agent_log.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # Next.js dashboard
+  dashboard:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - ./web:/app
+      - ./agent_log.json:/app/agent_log.json:ro
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - agent
+
+volumes:
+  agent_log:

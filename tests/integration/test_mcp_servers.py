@@ -9,7 +9,12 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(ROOT))
+
+# Ensure installed mcp SDK takes precedence over local mcp/ directory
+_site = str(Path.home() / ".local/lib/python3.12/site-packages")
+if _site not in sys.path:
+    sys.path.insert(0, _site)
+sys.path.insert(1, str(ROOT))
 
 
 class TestLidoMCP:
