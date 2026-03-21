@@ -154,6 +154,30 @@ graph TB
 
 ---
 
+## Deployed Contracts (Ethereum Sepolia — 2026-03-21)
+
+**Network:** Sepolia testnet (chain ID 11155111)
+**Deployer:** `0x814a3D96C36C45e92159Ce119a82b3250Aa79E5b`
+
+| Contract | Address | Sepolia Explorer |
+|----------|---------|-----------------|
+| `AgentTreasury` | `0xc54c77991B8fac16aB9856d8d33d563701925aFE` | [View](https://sepolia.etherscan.io/address/0xc54c77991B8fac16aB9856d8d33d563701925aFE) |
+| `AgentIdentity` | `0xd81e007F671F87659D2A9Ff0C51Ea83B61F13BAD` | [View](https://sepolia.etherscan.io/address/0xd81e007F671F87659D2A9Ff0C51Ea83B61F13BAD) |
+| `NexusArbiter` | `0x617BD18d26844069dE0a6b8A9c60F9F1b079E11F` | [View](https://sepolia.etherscan.io/address/0x617BD18d26844069dE0a6b8A9c60F9F1b079E11F) |
+| `NexusComputeCredit` | `0x640690E6159161b15466D38CCA63174dC66C6214` | [View](https://sepolia.etherscan.io/address/0x640690E6159161b15466D38CCA63174dC66C6214) |
+| `NexusReputationStaking` | `0xA09F93423FD2E6065402C111605e89F3E2645492` | [View](https://sepolia.etherscan.io/address/0xA09F93423FD2E6065402C111605e89F3E2645492) |
+| `NexusYieldSplitter` | `0x106226Ea0B12aDF164633b30b3fdec3f3Db0feD7` | [View](https://sepolia.etherscan.io/address/0x106226Ea0B12aDF164633b30b3fdec3f3Db0feD7) |
+| `NexusPublicGoodsVault` | `0x9601fc397bD36005C2d7dD76Ec5C2C8810871a2A` | [View](https://sepolia.etherscan.io/address/0x9601fc397bD36005C2d7dD76Ec5C2C8810871a2A) |
+| `AgentEscrow` | `0xE744c11C144AD9158368Fbe62c35DA13ac44A2d7` | [View](https://sepolia.etherscan.io/address/0xE744c11C144AD9158368Fbe62c35DA13ac44A2d7) |
+| `NexusSliceHook` | `0xF2Dc77a7008e2EcbB1eB067f8d929F287F8DAAbF` | [View](https://sepolia.etherscan.io/address/0xF2Dc77a7008e2EcbB1eB067f8d929F287F8DAAbF) |
+| `AgentPay` | `0x9A2add8AFa7f50F4a2343F628E36ec00485C7362` | [View](https://sepolia.etherscan.io/address/0x9A2add8AFa7f50F4a2343F628E36ec00485C7362) |
+| `AgentTrust` | `0xdcAe729E23Ad735614EccbDC022261cBB4A444A6` | [View](https://sepolia.etherscan.io/address/0xdcAe729E23Ad735614EccbDC022261cBB4A444A6) |
+| `AgentCooperate` | `0x1d75e4C99AF6B75EC8F876eAAa4f7489e34EF707` | [View](https://sepolia.etherscan.io/address/0x1d75e4C99AF6B75EC8F876eAAa4f7489e34EF707) |
+| `AgentSecrets` | `0x9f9675affd48c0402F8f277E0376D70FB3a7D1ca` | [View](https://sepolia.etherscan.io/address/0x9f9675affd48c0402F8f277E0376D70FB3a7D1ca) |
+| `AlkahestZKArbiter` | `0xf6f1F7B48b158d627Fd6313DC1C6aaf45f90a23B` | [View](https://sepolia.etherscan.io/address/0xf6f1F7B48b158d627Fd6313DC1C6aaf45f90a23B) |
+
+---
+
 ## MCP Servers (57 Tools)
 
 ```
